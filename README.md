@@ -24,5 +24,5 @@ eg:
 `npm start input/example.txt /home/mwoz/audio/tts.mp3 en`
 
 ## Known issues:
-1. Long text could cause "Socket Hang execption" - then re-run the conversion again (using `npm start`)
+1. Long text could cause "Socket Hang execption" - then re-run the conversion again (using `npm start`). It will start from where it left.
 2. Due to using free TTS service, text with >5h of using TTS could casue temporirly (few hours) TTS lock
