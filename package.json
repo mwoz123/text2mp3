@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "engines" : {
-    "npm" : ">=6.14.16"
-    "node" : ">=14.19.1"
-  }
+  "engines": {
+    "npm": ">=6.14.16",
+    "node": ">=14.19.1"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -22,4 +22,3 @@
     "string-natural-compare": "^3.0.1"
   }
 }
-

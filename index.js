@@ -6,23 +6,31 @@ const naturalCompare = require('string-natural-compare');
 const rimraf = require('rimraf');
 
 const TMP_DIR = 'tmp';
-const LIMIT = 199;
+const TTS_ENGINE_CHAR_LIMIT = 199;
 
-const input = 'input.txt';
-const filename = '13-rozdzial.mp3';
+const myArgs = process.argv.slice(2);
+const inputFile = myArgs[0];
+const fileName = myArgs[1]
+const lang = myArgs[2]
+
+const options = {
+  input : inputFile || 'input/example.txt',  //TODO: replace with Readme
+  filename : fileName  || 'output.mp3',
+  language: lang || 'en',
+}
 
 
 const fileNames = [];
-const existingFileParts  = fs.readdirSync(`./${TMP_DIR}/`).map(e=>TMP_DIR + "/" + e)
+const existingFileParts  = fs.readdirSync(`./${TMP_DIR}/`).filter(e=>!e.endsWith(".gitkeep")).map(e=>TMP_DIR + "/" + e)
 
 
-if (fs.existsSync(filename)){
-  console.error("ERROR: File exists: " + filename + " . (Re)move file before continuing.");
+if (fs.existsSync(options.filename)){
+  console.error("ERROR: File exists: " + options.filename + " . (Re)move file before continuing.");
   return;
 }
 
-const sentences = splitTextToSentences(input);
-concatAllMp3Parts(sentences);
+const sentences = splitTextToSentences(options.input);
+convert2mp3(sentences, options);
 
 
 
@@ -35,7 +43,7 @@ function splitTextToSentences(input) {
   const sentences = text.split('.').map(s=> s+'.');
   // const sentences = text.split('.').split('\n').map(s=> s+'.');
   const sentencesAndQuestions = sentences.map(s=>s.split("?")).flatMap(n=>n).map(q=> q.endsWith('.')? q : q+"?")
-  const sentencesLtLimit = sentencesAndQuestions.map(s=> s.length> LIMIT ? chunk(s, LIMIT) : s).flatMap(n=>n);
+  const sentencesLtLimit = sentencesAndQuestions.map(s=> s.length> TTS_ENGINE_CHAR_LIMIT ? chunk(s, TTS_ENGINE_CHAR_LIMIT) : s).flatMap(n=>n);
 
   console.log("Number of sentenses to be processed: "+ sentencesLtLimit.length)
   console.log("Number of sentenses from previous ('socket hung' teminated?) processing: "+ existingFileParts.length)
@@ -44,12 +52,12 @@ function splitTextToSentences(input) {
 }
 
 
-function concatAllMp3Parts(sentencesLtLimit) {
-    Promise.all(sentencesLtLimit.map((s,index)=> createMp3Parts(s, index))).then(values=>{
+function convert2mp3(sentencesLtLimit, options) {
+    Promise.all(sentencesLtLimit.map((s,index)=> createMp3Parts(s, index, options))).then(values=>{
     const sortedFileNames = [... new Set(fileNames)].sort(naturalCompare);
 
     audioconcat(fileNames)
-      .concat(filename)
+      .concat(options.filename)
       .on('start', function (command) {
         console.log('ffmpeg process started:');
       })
@@ -58,20 +66,20 @@ function concatAllMp3Parts(sentencesLtLimit) {
         console.error('ffmpeg stderr:', stderr)
       })
       .on('end', function (output) {
-        console.error('Audio created: ', filename)
+        console.log('Audio created: ', options.filename)
         const cleanTmpDir = () => rimraf(`./${TMP_DIR}/*`, function () { console.log('remove tmp files done'); });
         cleanTmpDir();
     })
   })
 }
 
-async function createMp3Parts(textChunk,index){
+async function createMp3Parts(textChunk,index, options){
   const fname = TMP_DIR + '/' + index+".mp3";
   fileNames.push(fname);
   if ( !existingFileParts.includes(fname)) {
     const buffer = await tts.synthesize({
       text: textChunk,
-      voice: 'pl',
+      voice: options.language,
       slow: false // optional
     });
     fs.writeFileSync(fname, buffer);
