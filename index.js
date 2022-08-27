@@ -14,8 +14,8 @@ const fileName = myArgs[1]
 const lang = myArgs[2]
 
 const options = {
-  input : inputFile || 'input/example.txt',  //TODO: replace with Readme
-  filename : fileName  || 'output.mp3',
+  input : inputFile || 'files/example.txt',  //TODO: replace with Readme
+  filename : fileName  || 'files/example-output.mp3',
   language: lang || 'en',
 }
 
