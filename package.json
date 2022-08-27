@@ -1,0 +1,25 @@
+{
+  "name": "text2mp3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines" : {
+    "npm" : ">=6.14.16"
+    "node" : ">=14.19.1"
+  }
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "audioconcat": "^0.1.4",
+    "chunk-text": "^2.0.1",
+    "google-translate-tts": "^0.4.0-dev",
+    "google-tts-api": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "string-natural-compare": "^3.0.1"
+  }
+}
+
