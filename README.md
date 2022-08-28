@@ -1,9 +1,9 @@
 # text2mp3
-Conversts given text to mp3 using TTS
+Conversts given (longer) text to mp3 using TTS
 
 
 ### Requirements:
-nodeJS >= 14
+[nodeJS](https://nodejs.org/en/) >= 14
 
 #### Install dependecies:
 `npm ci`
@@ -13,16 +13,16 @@ nodeJS >= 14
 
 eg:
 
-`npm start input/example.txt`
+`npm start file/example.txt`
 
-#### adavance usage 
+#### advanced usage 
 
-`npm start <path_to_file.txt> <ouptut_file_path.mp3> <language_in_2_chars_format>`
+`npm start <path_to_file.txt> <ouptut_file.mp3> <language>`
 
 eg:
 
-`npm start input/example.txt /home/mwoz/audio/tts.mp3 en`
+`npm start file/example.txt ~/audio/tts.mp3 en`
 
 ## Known issues:
 1. Long text could cause "Socket Hang execption" - then re-run the conversion again (using `npm start`). It will start from where it left.
-2. Due to using free TTS service, text with >5h of using TTS could casue temporirly (few hours) TTS lock
+2. Due to using free TTS service, very long text >5h of using TTS could casue temporarily (few hours) TTS lock
