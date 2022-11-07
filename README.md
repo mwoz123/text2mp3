@@ -3,7 +3,8 @@ Conversts given (longer) text to mp3 using TTS
 
 
 ### Requirements:
-[nodeJS](https://nodejs.org/en/) >= 14
+- [nodeJS](https://nodejs.org/en/) >= 14
+- [ffmpeg](https://ffmpeg.org)
 
 #### Install dependecies:
 `npm ci`
